@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Durjoy Datta | CSE Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Connectivity Notification -->
+  <div id="connectivity-toast" class="toast hidden">
+    <i class="fas fa-wifi"></i>
+    <span id="toast-message">Checking connection...</span>
+  </div>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">Durjoy Datta</div>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#academic">Academic</a></li>
+      <li><a href="#achievements">Achievements</a></li>
+      <li><a href="#certifications">Certifications</a></li>
+      <li><a href="#goals">Goals</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section id="home">
+    <div class="hero-grid container">
+      <!-- Left: Content -->
+      <div class="hero-text fade-in visible">
+        <div class="hero-badge">Available for Work</div>
+        <h1>Hi, I'm <span class="highlight">Durjoy Datta</span></h1>
+        <h3>CSE Student | Flutter Developer | AI Enthusiast</h3>
+        <p class="hero-desc" id="hero-desc-display">
+          Passionate about building scalable digital solutions that bridge the gap between technology and real-world
+          impact. Currently crafting high-performance mobile apps at Feni University (30th Batch), with a focus on
+          Healthcare and Education systems.
+        </p>
+
+        <div class="hero-details">
+          <div class="detail-item">
+            <span class="detail-val">5+</span>
+            <span class="detail-lab">Projects Completed</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-val">3+</span>
+            <span class="detail-lab">Core Tech Stack</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-val">FU</span>
+            <span class="detail-lab">30th Batch Student</span>
+          </div>
+        </div>
+
+        <div class="hero-btns">
+          <a href="https://durjoydattaprantho.github.io/Cv/" target="_blank" class="btn btn-primary">View My CV <i
+              class="fas fa-external-link-alt"></i></a>
+          <a href="#about" class="btn btn-outline">Let's Talk <i class="fas fa-paper-plane"></i></a>
+        </div>
+
+        <div class="social-links">
+          <a href="mailto:durjaydatta5@gmail.com" title="Email" target="_blank"><i class="fas fa-envelope"></i></a>
+          <a href="https://github.com/Durjoydattaprantho" title="GitHub" target="_blank"><i
+              class="fab fa-github"></i></a>
+          <a href="https://www.linkedin.com/in/durjay-datta-887813249/" title="LinkedIn" target="_blank"><i
+              class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+
+      <!-- Right: Image -->
+      <div class="hero-image-side fade-in visible">
+        <div class="profile-image-container">
+          <img src="image/Durjoy.jpeg" alt="Durjoy Datta" class="profile-img">
+          <div class="glow-bg"></div>
+          <div class="floating-badge badge-1"><i class="fab fa-flutter"></i> Flutter</div>
+          <div class="floating-badge badge-2"><i class="fas fa-database"></i> Firebase</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <div class="container fade-in">
+      <h2>About Me</h2>
+      <p id="about-bio-display">I am Durjoy Datta, a passionate Computer Science and Engineering student (30th Batch) at
+        Feni University.
+        Currently in my 3rd year, I am deeply interested in mobile app development, Artificial Intelligence, and
+        problem-solving techniques.
+
+        I have hands-on experience in building real-world projects using Flutter, Firebase, SQLite, and Python. I enjoy
+        developing scalable systems such as healthcare service platforms, student management systems, and
+        algorithm-based projects like map coloring with Dijkstra and A* implementations.
+
+        I am continuously learning and improving my skills in Data Structures, Database Management Systems, and Machine
+        Learning. I believe in teamwork, leadership, and contributing to meaningful tech solutions that can impact
+        real-world problems.
+
+        My goal is to become a skilled Software Engineer and Machine Learning Engineer, capable of building intelligent
+        and efficient systems.</p>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills">
+    <div class="container fade-in">
+      <h2>Expertise</h2>
+      <div class="skills-grid" id="skills-container">
+        <!-- Will be populated by Firebase -->
+        <div class="skill-card"><i class="fab fa-flutter"></i>
+          <h3>Flutter & Dart</h3>
+        </div>
+        <div class="skill-card"><i class="fab fa-python"></i>
+          <h3>Python</h3>
+        </div>
+        <div class="skill-card"><i class="fas fa-database"></i>
+          <h3>SQL & Firebase</h3>
+        </div>
+        <div class="skill-card"><i class="fas fa-brain"></i>
+          <h3>AI & ML Basics</h3>
+        </div>
+        <div class="skill-card"><i class="fas fa-code"></i>
+          <h3>DSA</h3>
+        </div>
+        <div class="skill-card"><i class="fab fa-git-alt"></i>
+          <h3>Git & GitHub</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects">
+    <div class="container fade-in">
+      <div style="display:flex; align-items:center; justify-content:center; gap:15px; margin-bottom:3rem;">
+        <h2 style="margin:0;">Project Showcases</h2>
+        <div class="db-health" id="db-status-indicator"
+          style="background:rgba(16,185,129,0.1); color:#10b981; padding:5px 12px; border-radius:8px; font-size:0.8rem; font-weight:700; display:flex; align-items:center; gap:8px;">
+          <i class="fas fa-database fa-spin" style="font-size:0.7rem;"></i> SYNCING LIVE
+        </div>
+      </div>
+      <div class="projects-grid" id="projects-container">
+        <!-- Will be populated by Firebase -->
+        <div class="project-card">
+          <img src="https://images.unsplash.com/photo-1576091160550-217359f4ecf8?q=80&w=800&auto=format"
+            alt="Healthcare Platform" class="project-img">
+          <div class="project-info">
+            <div class="status-badge">
+              <div class="status-dot"></div> Live Cloud
+            </div>
+            <h3>Healthcare Service Platform</h3>
+            <p>Multi-user healthcare app with real-time tracking, secure payments, booking system for patients, doctors,
+              pharmacy & ambulance.</p>
+            <div class="tags">
+              <span class="tag">Flutter</span>
+              <span class="tag">Firebase</span>
+              <span class="tag">Multi-user</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format"
+            alt="Student Management" class="project-img">
+          <div class="project-info">
+            <div class="status-badge" style="color:#38bdf8">
+              <div class="status-dot" style="background:#38bdf8"></div> Local Data
+            </div>
+            <h3>Student Management System</h3>
+            <p>CRUD application with clean UI for managing student records using local SQLite database.</p>
+            <div class="tags">
+              <span class="tag">Flutter</span>
+              <span class="tag">SQLite</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=800&auto=format"
+            alt="Map Algorithms" class="project-img">
+          <div class="project-info">
+            <div class="status-badge">
+              <div class="status-dot"></div> AI Engine
+            </div>
+            <h3>Map Coloring & Pathfinding</h3>
+            <p>Graph coloring + Dijkstra/A* implementation with Tkinter GUI visualization.</p>
+            <div class="tags">
+              <span class="tag">Python</span>
+              <span class="tag">Tkinter</span>
+              <span class="tag">Algorithms</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Academic -->
+  <section id="academic">
+    <div class="container fade-in">
+      <h2>Academic Knowledge</h2>
+      <div class="list-style academic-list">
+        <ul id="academic-container">
+          <li><i class="fas fa-check-circle"></i>Artificial Intelligence</li>
+          <li><i class="fas fa-check-circle"></i>Database Systems</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Achievements -->
+  <section id="achievements">
+    <div class="container fade-in">
+      <h2>Achievements & Activities</h2>
+      <div class="list-style activities-list">
+        <ul id="achievements-container">
+          <li><i class="fas fa-trophy"></i>Graphics Designer Internship Applicant – YUNet</li>
+          <li><i class="fas fa-users"></i>Event Organizer – CSE Association, Feni University</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Certifications (NEW) -->
+  <section id="certifications">
+    <div class="container fade-in">
+      <h2>Verified Certifications</h2>
+
+      <div class="cert-grid" id="certifications-container">
+        <!-- Will be populated by Firebase -->
+
+
+        <div class="cert-card">
+          <img src="image/Durjoy datta-DM Basics 1-C21506_page-0001.jpg" alt="Digital Marketing Basics"
+            class="cert-img">
+          <div class="cert-info">
+            <h3>Digital Marketing Basics</h3>
+            <p>Google • Issued: Jan 2025</p>
+          </div>
+        </div>
+
+        <div class="cert-card">
+          <img src="image/Durjoy datta-Data Science Foundations 1-C21509_page-0001.jpg" alt="Data Science Foundations"
+            class="cert-img">
+          <div class="cert-info">
+            <h3>Data Science Foundations</h3>
+            <p>Google • Issued: Dec 2024</p>
+          </div>
+        </div>
+
+        <div class="cert-card">
+          <img src="image/UX Fundamentals 1-C25175_page-0001.jpg" alt="UX Fundamentals" class="cert-img">
+          <div class="cert-info">
+            <h3>UX Fundamentals</h3>
+            <p>Google • Issued: Nov 2024</p>
+          </div>
+        </div>
+
+        <div class="cert-card">
+          <img src="image/Durjoy datta_Certificate.png" alt="Flutter Mobile Development" class="cert-img">
+          <div class="cert-info">
+            <h3>Flutter Mobile Development</h3>
+            <p>Google • Issued: Feb 2025</p>
+          </div>
+        </div>
+
+        <div class="cert-card">
+          <img src="image/speak_up_BD.png" alt="Speak Up Bangladesh" class="cert-img">
+          <div class="cert-info">
+            <h3>Speak Up Bangladesh</h3>
+            <p>Google • Issued: Feb 2025</p>
+          </div>
+        </div>
+
+        <div class="cert-card">
+          <img src="image/Front_end_HTML.jpg" alt="Front end HTML" class="cert-img">
+          <div class="cert-info">
+            <h3>Front end HTML</h3>
+            <p>Google • Issued: Feb 2025</p>
+          </div>
+        </div>
+
+        <div class="cert-card">
+          <img src="image/Durjoy Datta_page-0001.jpg" alt="Durjoy Datta Certificate" class="cert-img">
+          <div class="cert-info">
+            <h3>Durjoy Datta Certificate</h3>
+            <p>Google • Issued: Feb 2025</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Goals -->
+  <section id="goals">
+    <div class="container fade-in">
+      <h2>Future Goals</h2>
+      <div class="list-style goals-list">
+        <ul id="goals-container">
+          <li><i class="fas fa-rocket"></i>Become a Machine Learning Engineer</li>
+          <li><i class="fas fa-server"></i>Build large-scale software systems</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Durjoy Datta | <a href="login.html" style="color: inherit; text-decoration: none; opacity: 0.5;">Admin
+        Login</a></p>
+  </footer>
+
+  <!-- Image Modal -->
+  <div id="image-modal" class="image-modal">
+    <span class="close-modal">&times;</span>
+    <img class="modal-content" id="full-image">
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+  <script src="style.js"></script>
+</body>
+
+</html>

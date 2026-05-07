@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Durjoy Datta</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+    <!-- Auth Guard -->
+    <script>
+        if (localStorage.getItem('isAdminLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <div class="admin-wrapper" style="display: block;">
+        <!-- Top Navigation (Normal Website Style) -->
+        <nav class="admin-top-nav">
+            <div class="container" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 0;">
+                <div class="logo">Admin Dashboard</div>
+                <ul class="nav-links" style="display: flex; gap: 1.5rem; list-style: none;">
+                    <li class="active" data-section="overview">Overview</li>
+                    <li data-section="about">About</li>
+                    <li data-section="skills">Skills</li>
+                    <li data-section="projects">Projects</li>
+                    <li data-section="academic">Academic</li>
+                    <li data-section="achievements">Achievements</li>
+                    <li data-section="certs">Certs</li>
+                    <li data-section="goals">Goals</li>
+                    <li data-section="settings" style="color: var(--primary); font-weight: bold;"><i class="fas fa-cog"></i> Settings</li>
+                </ul>
+                <button id="logout-btn" class="btn btn-outline" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="admin-main" style="max-width: 1200px; margin: 0 auto; padding: 4rem 2rem;">
+            <header class="main-header">
+                <div>
+                    <h1>Welcome, <span class="highlight">Durjoy</span></h1>
+                    <p>Manage your portfolio content here</p>
+                </div>
+                <div class="header-actions">
+                    <a href="index.html" target="_blank" class="btn btn-outline">
+                        <i class="fas fa-external-link-alt"></i> View Site
+                    </a>
+                </div>
+            </header>
+
+            <!-- Dashboard Sections -->
+            <section id="overview" class="admin-section active">
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-code"></i>
+                        <div class="stat-info">
+                            <span class="stat-val" id="count-skills">0</span>
+                            <span class="stat-lab">Total Skills</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-laptop-code"></i>
+                        <div class="stat-info">
+                            <span class="stat-val" id="count-projects">0</span>
+                            <span class="stat-lab">Projects</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-award"></i>
+                        <div class="stat-info">
+                            <span class="stat-val" id="count-certs">0</span>
+                            <span class="stat-lab">Certifications</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-actions">
+                    <h2>Quick Actions</h2>
+                    <div class="actions-grid">
+                        <button class="action-btn" onclick="switchSection('projects')">
+                            <i class="fas fa-plus"></i> Add New Project
+                        </button>
+                        <button class="action-btn" onclick="switchSection('skills')">
+                            <i class="fas fa-plus"></i> Add New Skill
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Skills Section -->
+            <section id="skills" class="admin-section">
+                <div class="section-header">
+                    <h2>Manage Skills</h2>
+                    <button class="btn btn-primary" onclick="showModal('skill')">
+                        <i class="fas fa-plus"></i> Add Skill
+                    </button>
+                </div>
+                <div class="admin-table-container">
+                    <table id="skills-table">
+                        <thead>
+                            <tr>
+                                <th>Icon</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="skills-list">
+                            <!-- Items will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Projects Section -->
+            <section id="projects" class="admin-section">
+                <div class="section-header">
+                    <h2>Manage Projects</h2>
+                    <button class="btn btn-primary" onclick="showModal('project')">
+                        <i class="fas fa-plus"></i> Add Project
+                    </button>
+                </div>
+                <div class="admin-table-container">
+                    <table id="projects-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Title</th>
+                                <th>Tags</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="projects-list">
+                            <!-- Items will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+             <!-- About Section -->
+            <section id="about" class="admin-section">
+                <div class="section-header">
+                    <h2>Edit About Me</h2>
+                </div>
+                <div class="admin-table-container" style="padding: 2rem;">
+                    <form id="about-form">
+                        <div class="form-group">
+                            <label>Short Description (Hero)</label>
+                            <textarea id="heroDesc" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Full Biography</label>
+                            <textarea id="fullBio" rows="8"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save About Me</button>
+                    </form>
+                </div>
+            </section>
+
+             <!-- Academic Section -->
+             <section id="academic" class="admin-section">
+                <div class="section-header">
+                    <h2>Academic Knowledge</h2>
+                    <button class="btn btn-primary" onclick="showModal('academic')">
+                        <i class="fas fa-plus"></i> Add Item
+                    </button>
+                </div>
+                <div class="admin-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Topic</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="academic-list"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Achievements Section -->
+            <section id="achievements" class="admin-section">
+                <div class="section-header">
+                    <h2>Achievements</h2>
+                    <button class="btn btn-primary" onclick="showModal('achievement')">
+                        <i class="fas fa-plus"></i> Add Achievement
+                    </button>
+                </div>
+                <div class="admin-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Achievement</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="achievements-list"></tbody>
+                    </table>
+                </div>
+            </section>
+
+             <!-- Goals Section -->
+             <section id="goals" class="admin-section">
+                <div class="section-header">
+                    <h2>Future Goals</h2>
+                    <button class="btn btn-primary" onclick="showModal('goal')">
+                        <i class="fas fa-plus"></i> Add Goal
+                    </button>
+                </div>
+                <div class="admin-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Goal</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="goals-list"></tbody>
+                    </table>
+                </div>
+            </section>
+             <section id="certs" class="admin-section">
+                <div class="section-header">
+                    <h2>Manage Certifications</h2>
+                    <button class="btn btn-primary" onclick="showModal('cert')">
+                        <i class="fas fa-plus"></i> Add Cert
+                    </button>
+                </div>
+                <div class="admin-table-container">
+                    <table id="certs-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Issuer</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="certs-list">
+                            <!-- Items will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <!-- Settings Section -->
+            <section id="settings" class="admin-section">
+                <div class="content-card">
+                    <h2>Global Control System</h2>
+                    <p class="section-desc">Manage your social links and portfolio visibility.</p>
+                    
+                    <form id="settings-form" class="modal-form">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                            <div>
+                                <h3>Social Links</h3>
+                                <div class="form-group">
+                                    <label>GitHub URL</label>
+                                    <input type="url" id="githubUrl" placeholder="https://github.com/...">
+                                </div>
+                                <div class="form-group">
+                                    <label>LinkedIn URL</label>
+                                    <input type="url" id="linkedinUrl" placeholder="https://linkedin.com/in/...">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" id="emailContact" placeholder="example@gmail.com">
+                                </div>
+                                <div class="form-group">
+                                    <label>Google Drive Folder Link</label>
+                                    <input type="url" id="driveUrl" placeholder="https://drive.google.com/...">
+                                </div>
+                            </div>
+                            <div>
+                                <h3>Section Visibility</h3>
+                                <div class="form-group" style="display: flex; align-items: center; gap: 1rem; margin-top: 1rem;">
+                                    <input type="checkbox" id="showAbout" checked style="width: 20px;"> <label>Show About Me</label>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center; gap: 1rem;">
+                                    <input type="checkbox" id="showSkills" checked style="width: 20px;"> <label>Show Skills</label>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center; gap: 1rem;">
+                                    <input type="checkbox" id="showProjects" checked style="width: 20px;"> <label>Show Projects</label>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center; gap: 1rem;">
+                                    <input type="checkbox" id="showCerts" checked style="width: 20px;"> <label>Show Certifications</label>
+                                </div>
+                                <div class="form-group" style="display: flex; align-items: center; gap: 1rem;">
+                                    <input type="checkbox" id="showGoals" checked style="width: 20px;"> <label>Show Future Goals</label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="margin-top: 2rem;">Save All Settings</button>
+                    </form>
+
+                    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--glass-border);">
+                        <h3>Data Backup (Port part by part)</h3>
+                        <p class="section-desc">Download your entire portfolio data to save it on Google Drive.</p>
+                        <button id="export-btn" class="btn btn-outline" style="margin-top: 1rem;">
+                            <i class="fas fa-file-export"></i> Export All Data to JSON
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modal-title">Add Item</h3>
+                <button onclick="hideModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="admin-form" class="modal-form">
+                <div id="form-fields">
+                    <!-- Dynamic fields based on item type -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="hideModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs (v10 Compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    
+    <script src="admin.js"></script>
+</body>
+
+</html>
