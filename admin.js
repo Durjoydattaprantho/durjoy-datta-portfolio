@@ -18,7 +18,7 @@ if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
 }
 
 // --- State Management ---
-let currentType = ''; // 'skill', 'project', 'cert', 'academic', 'achievement', 'goal'
+let currentType = ''; // 'skill', 'project', 'cert', 'academic', 'achievement', 'goal', 'sql'
 let editId = null;
 
 // --- DOM Elements ---
@@ -300,16 +300,81 @@ function renderFormFields(type, data = {}) {
                 </div>
             </div>
         `;
+    } else if (type === 'sql') {
+        formFields.innerHTML = `
+            <div class="form-group">
+                <label>Database/System Title</label>
+                <input type="text" id="title" value="${data.title || ''}" required>
+            </div>
+            <div class="form-group">
+                <label>Implementation Type</label>
+                <select id="type" required style="background: rgba(15, 23, 42, 0.92); color: white; border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; width: 100%;">
+                    <option value="Relational" ${data.type === 'Relational' ? 'selected' : ''}>Relational (MySQL/PostgreSQL)</option>
+                    <option value="NoSQL" ${data.type === 'NoSQL' ? 'selected' : ''}>NoSQL (Firebase/MongoDB)</option>
+                    <option value="Embedded" ${data.type === 'Embedded' ? 'selected' : ''}>Embedded (SQLite/Hive)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <input type="text" id="status" value="${data.status || 'Active'}" placeholder="Live / Local / Development">
+            </div>
+            <div class="form-group">
+                <label>Key Features (comma separated)</label>
+                <textarea id="description" rows="3" required>${data.description || ''}</textarea>
+            </div>
+        `;
+        `;
+    } else if (type === 'academic') {
+        formFields.innerHTML = `
+            <div class="form-group">
+                <label>Topic/Subject</label>
+                <input type="text" id="text" value="${data.text || ''}" required>
+            </div>
+            <div class="form-group">
+                <label>Category (Part)</label>
+                <select id="category" style="background: rgba(15, 23, 42, 0.92); color: white; border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; width: 100%;">
+                    <option value="Core CS" ${data.category === 'Core CS' ? 'selected' : ''}>Core Computer Science</option>
+                    <option value="Development" ${data.category === 'Development' ? 'selected' : ''}>Software Development</option>
+                    <option value="AI & Math" ${data.category === 'AI & Math' ? 'selected' : ''}>AI & Mathematics</option>
+                </select>
+            </div>
+        `;
+    } else if (type === 'achievement') {
+        formFields.innerHTML = `
+            <div class="form-group">
+                <label>Achievement Description</label>
+                <input type="text" id="text" value="${data.text || ''}" required>
+            </div>
+            <div class="form-group">
+                <label>Type (Part)</label>
+                <select id="category" style="background: rgba(15, 23, 42, 0.92); color: white; border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; width: 100%;">
+                    <option value="Competition" ${data.category === 'Competition' ? 'selected' : ''}>Competition/Hackathon</option>
+                    <option value="Leadership" ${data.category === 'Leadership' ? 'selected' : ''}>Leadership/Event</option>
+                    <option value="Academic" ${data.category === 'Academic' ? 'selected' : ''}>Academic Achievement</option>
+                </select>
+            </div>
+        `;
+    } else if (type === 'goal') {
+        formFields.innerHTML = `
+            <div class="form-group">
+                <label>Future Goal</label>
+                <input type="text" id="text" value="${data.text || ''}" required>
+            </div>
+            <div class="form-group">
+                <label>Priority (Part)</label>
+                <select id="category" style="background: rgba(15, 23, 42, 0.92); color: white; border: 1px solid var(--glass-border); padding: 0.8rem; border-radius: 8px; width: 100%;">
+                    <option value="Short Term" ${data.category === 'Short Term' ? 'selected' : ''}>Short Term</option>
+                    <option value="Mid Term" ${data.category === 'Mid Term' ? 'selected' : ''}>Mid Term</option>
+                    <option value="Long Term" ${data.category === 'Long Term' ? 'selected' : ''}>Long Term</option>
+                </select>
+            </div>
+        `;
     } else {
-        // Generic text field for list items (academic, achievements, goals)
+        // Generic text field
         formFields.innerHTML = `
             <div class="form-group">
                 <label>Content</label>
                 <input type="text" id="text" value="${data.text || ''}" required>
-            </div>
-            <div class="form-group">
-                <label>Date (Optional)</label>
-                <input type="text" id="date" value="${data.date || ''}" placeholder="2024 / Ongoing">
             </div>
         `;
     }
@@ -340,7 +405,8 @@ adminForm.addEventListener('submit', async (e) => {
             'cert': 'certifications',
             'academic': 'academic',
             'achievement': 'achievements',
-            'goal': 'goals'
+            'goal': 'goals',
+            'sql': 'sql_systems'
         };
         const collectionName = collectionMap[currentType];
         
@@ -387,7 +453,8 @@ async function loadSectionData(sectionId) {
             'certs': 'certifications',
             'academic': 'academic',
             'achievements': 'achievements',
-            'goals': 'goals'
+            'goals': 'goals',
+            'sql': 'sql_systems'
         };
         const collectionName = collectionMap[sectionId];
         let items = [];
@@ -404,59 +471,112 @@ async function loadSectionData(sectionId) {
         }
         
         container.innerHTML = '';
-        items.forEach(data => {
-            let row = '';
-            if (sectionId === 'skills') {
-                row = `
-                    <tr>
-                        <td><i class="${data.icon} table-icon"></i></td>
-                        <td>${data.name}</td>
-                        <td>${data.date || ''}</td>
-                        <td><span class="tag">${data.category || 'Frontend'}</span></td>
-                        <td class="table-actions">
-                            <button class="btn-icon" onclick='showModal("skill", ${JSON.stringify(data)})'><i class="fas fa-edit"></i></button>
-                            <button class="btn-icon delete" onclick="deleteItem('skills', '${data.id}')"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
-                `;
-            } else if (sectionId === 'projects') {
-                row = `
-                    <tr>
-                        <td><img src="${data.imageUrl}" class="table-img"></td>
-                        <td>${data.title}</td>
-                        <td>${data.date || ''}</td>
-                        <td><span class="tag">${data.category || 'Web'}</span></td>
-                        <td class="table-actions">
-                            <button class="btn-icon" onclick='showModal("project", ${JSON.stringify(data)})'><i class="fas fa-edit"></i></button>
-                            <button class="btn-icon delete" onclick="deleteItem('projects', '${data.id}')"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
-                `;
-            } else if (sectionId === 'certs') {
-                row = `
-                    <tr>
-                        <td>${data.name}</td>
-                        <td><span class="tag">${data.category || 'Technical'}</span></td>
-                        <td class="table-actions">
-                            <button class="btn-icon" onclick='showModal("cert", ${JSON.stringify(data)})'><i class="fas fa-edit"></i></button>
-                            <button class="btn-icon delete" onclick="deleteItem('certifications', '${data.id}')"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
-                `;
-            } else {
-                row = `
-                    <tr>
-                        <td>${data.text}</td>
-                        <td>${data.date || ''}</td>
-                        <td class="table-actions">
-                            <button class="btn-icon" onclick='showModal("${sectionId.slice(0, -1)}", ${JSON.stringify(data)})'><i class="fas fa-edit"></i></button>
-                            <button class="btn-icon delete" onclick="deleteItem('${collectionName}', '${data.id}')"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>
-                `;
-            }
-            container.innerHTML += row;
-        });
+        
+        container.innerHTML = '';
+        
+        if (['skills', 'projects', 'sql', 'academic', 'achievements', 'goals'].includes(sectionId)) {
+            let categories = [];
+            if (sectionId === 'skills') categories = ['Frontend', 'Backend', 'Tools'];
+            else if (sectionId === 'projects') categories = ['Web', 'Mobile', 'AI/ML'];
+            else if (sectionId === 'sql') categories = ['Relational', 'NoSQL', 'Embedded'];
+            else if (sectionId === 'academic') categories = ['Core CS', 'Development', 'AI & Math'];
+            else if (sectionId === 'achievements') categories = ['Competition', 'Leadership', 'Academic'];
+            else if (sectionId === 'goals') categories = ['Short Term', 'Mid Term', 'Long Term'];
+            
+            categories.forEach(cat => {
+                const filteredItems = items.filter(i => {
+                    const val = i.category || i.type || (sectionId === 'skills' ? 'Frontend' : (sectionId === 'projects' ? 'Web' : (sectionId === 'sql' ? 'Relational' : (sectionId === 'academic' ? 'Core CS' : (sectionId === 'achievements' ? 'Competition' : 'Short Term')))));
+                    return val === cat;
+                });
+                
+                if (filteredItems.length > 0) {
+                    container.innerHTML += `<tr class="group-header"><td colspan="5" style="background: rgba(56, 189, 248, 0.1); color: var(--primary); font-weight: bold; padding: 10px 15px;">${cat} Part</td></tr>`;
+                    filteredItems.forEach(data => {
+                        let row = '';
+                        if (sectionId === 'skills') {
+                            row = `
+                                <tr>
+                                    <td><i class="${data.icon} table-icon"></i></td>
+                                    <td>${data.name}</td>
+                                    <td>${data.date || ''}</td>
+                                    <td><span class="tag">${data.category || 'Frontend'}</span></td>
+                                    <td class="table-actions">
+                                        <button class="btn-icon" onclick='showModal("skill", ${JSON.stringify(data)})'><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon delete" onclick="deleteItem('skills', '${data.id}')"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            `;
+                        } else if (sectionId === 'projects') {
+                            row = `
+                                <tr>
+                                    <td><img src="${data.imageUrl}" class="table-img"></td>
+                                    <td>${data.title}</td>
+                                    <td>${data.date || ''}</td>
+                                    <td><span class="tag">${data.category || 'Web'}</span></td>
+                                    <td class="table-actions">
+                                        <button class="btn-icon" onclick='showModal("project", ${JSON.stringify(data)})'><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon delete" onclick="deleteItem('projects', '${data.id}')"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            `;
+                        } else if (sectionId === 'sql') {
+                            row = `
+                                <tr>
+                                    <td>${data.title}</td>
+                                    <td><span class="tag">${data.type || 'Relational'}</span></td>
+                                    <td>${data.status || 'Active'}</td>
+                                    <td class="table-actions">
+                                        <button class="btn-icon" onclick='showModal("sql", ${JSON.stringify(data)})'><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon delete" onclick="deleteItem('sql_systems', '${data.id}')"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            `;
+                        } else {
+                            // Academic, Achievement, Goal
+                            row = `
+                                <tr>
+                                    <td>${data.text}</td>
+                                    <td><span class="tag">${data.category || 'Other'}</span></td>
+                                    <td class="table-actions">
+                                        <button class="btn-icon" onclick='showModal("${sectionId === 'achievements' ? 'achievement' : sectionId.slice(0, -1)}", ${JSON.stringify(data)})'><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon delete" onclick="deleteItem('${collectionName}', '${data.id}')"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            `;
+                        }
+                        container.innerHTML += row;
+                    });
+                }
+            });
+        } else {
+            items.forEach(data => {
+                let row = '';
+                if (sectionId === 'certs') {
+                    row = `
+                        <tr>
+                            <td>${data.name}</td>
+                            <td><span class="tag">${data.category || 'Technical'}</span></td>
+                            <td class="table-actions">
+                                <button class="btn-icon" onclick='showModal("cert", ${JSON.stringify(data)})'><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon delete" onclick="deleteItem('certifications', '${data.id}')"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    row = `
+                        <tr>
+                            <td>${data.text}</td>
+                            <td>${data.date || ''}</td>
+                            <td class="table-actions">
+                                <button class="btn-icon" onclick='showModal("${sectionId.slice(0, -1)}", ${JSON.stringify(data)})'><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon delete" onclick="deleteItem('${collectionName}', '${data.id}')"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                }
+                container.innerHTML += row;
+            });
+        }
     } catch (error) {
         console.error("Error loading data:", error);
         container.innerHTML = '<tr><td colspan="4">Error loading data</td></tr>';
@@ -488,10 +608,12 @@ async function updateStats() {
         const skills = await db.collection('skills').get();
         const projects = await db.collection('projects').get();
         const certs = await db.collection('certifications').get();
+        const sql = await db.collection('sql_systems').get();
         
         document.getElementById('count-skills').textContent = skills.size;
         document.getElementById('count-projects').textContent = projects.size;
         document.getElementById('count-certs').textContent = certs.size;
+        document.getElementById('count-sql').textContent = sql.size;
     } catch (error) {
         console.error("Error updating stats:", error);
     }

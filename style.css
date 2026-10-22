@@ -565,6 +565,19 @@ section h2 {
     box-shadow: 0 5px 15px rgba(56, 189, 248, 0.3);
 }
 
+.sql-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.sql-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary) !important;
+    box-shadow: 0 10px 30px rgba(56, 189, 248, 0.1);
+}
+
 .cert-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));

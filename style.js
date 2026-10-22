@@ -178,8 +178,15 @@ async function loadData(db) {
         const academicContainer = document.getElementById('academic-container');
         if (academic.length > 0) {
             academicContainer.innerHTML = '';
-            academic.forEach(data => {
-                academicContainer.innerHTML += `<li><i class="fas fa-check-circle"></i>${data.text} ${data.date ? `<span style="color: var(--primary); font-size: 0.8rem; margin-left: auto; opacity: 0.7;">(${data.date})</span>` : ''}</li>`;
+            const categories = ['Core CS', 'Development', 'AI & Math'];
+            categories.forEach(cat => {
+                const filtered = academic.filter(i => (i.category || 'Core CS') === cat);
+                if (filtered.length > 0) {
+                    academicContainer.innerHTML += `<li style="list-style:none; margin-top:1.5rem; color:var(--primary); font-weight:700; border-bottom:1px solid rgba(56,189,248,0.2); padding-bottom:5px; margin-bottom:10px;">${cat} Part</li>`;
+                    filtered.forEach(data => {
+                        academicContainer.innerHTML += `<li><i class="fas fa-check-circle"></i>${data.text}</li>`;
+                    });
+                }
             });
         }
 
@@ -188,8 +195,15 @@ async function loadData(db) {
         const achievementsContainer = document.getElementById('achievements-container');
         if (achievements.length > 0) {
             achievementsContainer.innerHTML = '';
-            achievements.forEach(data => {
-                achievementsContainer.innerHTML += `<li><i class="fas fa-trophy"></i>${data.text} ${data.date ? `<span style="color: var(--primary); font-size: 0.8rem; margin-left: auto; opacity: 0.7;">(${data.date})</span>` : ''}</li>`;
+            const categories = ['Competition', 'Leadership', 'Academic'];
+            categories.forEach(cat => {
+                const filtered = achievements.filter(i => (i.category || 'Competition') === cat);
+                if (filtered.length > 0) {
+                    achievementsContainer.innerHTML += `<li style="list-style:none; margin-top:1.5rem; color:var(--primary); font-weight:700; border-bottom:1px solid rgba(56,189,248,0.2); padding-bottom:5px; margin-bottom:10px;">${cat} Part</li>`;
+                    filtered.forEach(data => {
+                        achievementsContainer.innerHTML += `<li><i class="fas fa-trophy"></i>${data.text}</li>`;
+                    });
+                }
             });
         }
 
@@ -198,8 +212,44 @@ async function loadData(db) {
         const goalsContainer = document.getElementById('goals-container');
         if (goals.length > 0) {
             goalsContainer.innerHTML = '';
-            goals.forEach(data => {
-                goalsContainer.innerHTML += `<li><i class="fas fa-rocket"></i>${data.text} ${data.date ? `<span style="color: var(--primary); font-size: 0.8rem; margin-left: auto; opacity: 0.7;">(${data.date})</span>` : ''}</li>`;
+            const categories = ['Short Term', 'Mid Term', 'Long Term'];
+            categories.forEach(cat => {
+                const filtered = goals.filter(i => (i.category || 'Short Term') === cat);
+                if (filtered.length > 0) {
+                    goalsContainer.innerHTML += `<li style="list-style:none; margin-top:1.5rem; color:var(--primary); font-weight:700; border-bottom:1px solid rgba(56,189,248,0.2); padding-bottom:5px; margin-bottom:10px;">${cat} Part</li>`;
+                    filtered.forEach(data => {
+                        goalsContainer.innerHTML += `<li><i class="fas fa-rocket"></i>${data.text}</li>`;
+                    });
+                }
+            });
+        }
+
+        // Load SQL Systems
+        const sqlSystems = await fetchCollection('sql_systems');
+        if (sqlSystems.length > 0) {
+            const container = document.getElementById('sql-container');
+            container.innerHTML = '';
+            const types = ['Relational', 'NoSQL', 'Embedded'];
+            types.forEach(type => {
+                const filtered = sqlSystems.filter(s => (s.type || 'Relational') === type);
+                if (filtered.length > 0) {
+                    container.innerHTML += `
+                        <div class="sql-type-header" style="grid-column: 1/-1; margin-top: 2rem; color: var(--primary); font-weight: 700; font-size: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-database"></i> ${type} Architecture
+                        </div>
+                    `;
+                    filtered.forEach(data => {
+                        container.innerHTML += `
+                            <div class="sql-card" style="background: var(--card-bg); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--glass-border); transition: 0.3s; margin-top: 1rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                    <h3 style="margin: 0; color: #fff;">${data.title}</h3>
+                                    <span class="status-badge" style="background: rgba(16,185,129,0.1); color: #10b981; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;">${data.status || 'Active'}</span>
+                                </div>
+                                <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.5;">${data.description}</p>
+                            </div>
+                        `;
+                    });
+                }
             });
         }
 
